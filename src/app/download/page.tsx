@@ -9,7 +9,6 @@ import Link from 'next/link'
 
 export default function Download () {
   const [platform, setPlatform] = useState<string | null>(null)
-  const [latestVersion, setLatestVersion] = useState<null | string>()
   const [latestLauncherVersion, setLatestLauncherVersion] = useState<
     null | string
   >()
@@ -18,19 +17,12 @@ export default function Download () {
   useEffect(() => {
     const fetchVersions = async () => {
       try {
-        const gameRes = await axios.get(
-          'https://berrydashwithguns.lncvrt.xyz/database/getLatestVersion.php',
-          {
-            responseType: 'text'
-          }
-        )
         const launcherRes = await axios.get(
           'https://berrydash.lncvrt.xyz/database/launcher/latest.php',
           {
             responseType: 'text'
           }
         )
-        setLatestVersion((gameRes.data as string).trim())
         setLatestLauncherVersion((launcherRes.data as string).trim())
       } catch {
         setLatestCheckFailed(true)
@@ -50,7 +42,7 @@ export default function Download () {
         </Link>
       </div>
       <p className='text-2xl'>Berry Dash with Guns Downloads</p>
-      {latestVersion == null || latestLauncherVersion == null ? (
+      {latestLauncherVersion == null ? (
         latestCheckFailed ? (
           <>
             <p>Failed to load</p>
